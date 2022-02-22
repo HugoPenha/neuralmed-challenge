@@ -51,14 +51,12 @@ key: file value:image.jpg
 - **Se o tamanho for parametrizável como você mudaria a sua arquitetura?**
 -- Seria necessário uma alteração na camada da API para o recebimento desses parametros de dimensão, e assim, os enviando em conjunto na mensagem para fila onde ao chegar na aplicação de consumir utilizaria esses valores de forma dinamica. Também seria importante realizar uma validação ou até uma restrição para tamanhos muito grandes que possam impactar o sistema, possívelmente um tratamento a parte para esses casos. 
 
-- **Qual a complexidade da sua solução?**
-
 - **É possível melhorar a performance da solução? Como as melhorias impactam a leitura e manutenção do código?**
 -- Sim é possível. A utilização de background tasks poderia otimizar a aplicação em conjunto com utilização de mais filas para determinados casos específicos de acordo com sua prioridade. Uma alternativa poderia ser em relação a uma solução que utilizasse mais filas e mais consumers onde por exemplo tendo range de tamanho para definir em qual fila uma mensagem iria, e assim, definindo a prioridade e tamanho dessas filas para que as mais simples fossem executadas com uma prioridade maior. Ex: 
     50 - 100mb : Fila 1
     100 - 150mb : Fila 2
     ...
-Algumas configurações também são importantes para uma performance maior como por exemplo setar um tamanho máximo de fila, dividir as filas em diferentes clusters e entre outras. 
+Algumas configurações também são importantes para uma performance maior como por exemplo setar um tamanho máximo de fila, dividir as filas em diferentes clusters e entre outras. A manutenção numa solução planejada dessa forma seria sempre referente a entender qual tamanho estamos lidando, lidando por blocos e assim acabaria facilitando numa leitura de código pois cada caso teria seu lugar específico de execução.  
  
 
 - **De que forma o sistema pode escalar com a arquitetura planejada?**
