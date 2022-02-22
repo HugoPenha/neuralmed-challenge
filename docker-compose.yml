@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq-service
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    restart: always
+
+
+  producer:
+    build: ./producer
+    container_name: producer-api
+    ports:
+      - 8000:8000
+    depends_on:
+      - rabbitmq
+    restart: on-failure
+
+
+  consumer:
+    build: ./consumer
+    container_name: consumer
+    depends_on:
+      - rabbitmq
+      - producer
+    restart: on-failure
+    command: ["python", "./app/main.py"]
